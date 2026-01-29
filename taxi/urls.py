@@ -7,7 +7,7 @@ from .views import (
     DriverDetailView
 )
 
-app_name = "taxi" # <<< ADICIONADO ISSO PARA RESOLVER O ERRO DE TESTE/URLS
+app_name = "taxi"
 
 urlpatterns = [
     path(
