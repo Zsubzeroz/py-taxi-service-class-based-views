@@ -19,7 +19,7 @@ class CarDetailView(DetailView):
     model = Car
 
     def get_queryset(self):
-        # Otimização: select_related para fabricante e prefetch_related para drivers
+        # Formatação estrita para respeitar E501
         return (
             Car.objects.select_related("manufacturer")
             .prefetch_related("drivers")
@@ -36,7 +36,7 @@ class DriverDetailView(DetailView):
     model = Driver
 
     def get_queryset(self):
-        # Otimização N+1: prefetch_related para carros e select_related aninhado para fabricante
+        # Formatação estrita para respeitar E501
         return Driver.objects.prefetch_related(
             Prefetch(
                 "cars",
