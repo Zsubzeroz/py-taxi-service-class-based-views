@@ -19,10 +19,12 @@ class CarDetailView(DetailView):
     model = Car
 
     def get_queryset(self):
-        # Quebra para respeitar E501
-        return Car.objects.select_related("manufacturer").prefetch_related(
-            "drivers"
-        ).all() # Esta linha (que começa em 8 colunas de indentação) deve estar ok agora.
+        # Otimização: select_related para fabricante e prefetch_related para drivers
+        return (
+            Car.objects.select_related("manufacturer")
+            .prefetch_related("drivers")
+            .all()
+        )
 
 
 class DriverListView(ListView):
@@ -34,7 +36,10 @@ class DriverDetailView(DetailView):
     model = Driver
 
     def get_queryset(self):
-        # Otimização N+1: prefetch_related com select_related aninhado
+        # Otimização N+1: prefetch_related para carros e select_related aninhado para fabricante
         return Driver.objects.prefetch_related(
-            Prefetch("cars", queryset=Car.objects.select_related("manufacturer"))
+            Prefetch(
+                "cars",
+                queryset=Car.objects.select_related("manufacturer")
+            )
         ).all()
